@@ -1,4 +1,4 @@
-package com.example.yaglimi;
+package com.example.yaglimi.views;
 
 public class Memberinfo {
     private String name;

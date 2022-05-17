@@ -27,8 +27,10 @@ public class ShareActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("상비약 나눔 게시판");
 
         FloatingActionButton post_add = findViewById(R.id.postadd_btn);
+        String input = "상비약 나눔게시판";
         post_add.setOnClickListener(v-> {
             Intent intentpost = new Intent(getApplicationContext(), PostActivity.class);
+            intentpost.putExtra("text", input);
             startActivity(intentpost);
             finish();
         });
@@ -45,7 +47,7 @@ public class ShareActivity extends AppCompatActivity {
         //return super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.share:
-                Toast.makeText(getApplicationContext(), "이미 나눔게시판 화면입니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "이미 상비약 나눔게시판 화면입니다.", Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
             case R.id.information:
                 Intent intentinfo = new Intent(getApplicationContext(), InformationActivity.class);

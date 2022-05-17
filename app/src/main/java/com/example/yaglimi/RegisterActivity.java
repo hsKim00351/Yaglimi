@@ -1,23 +1,18 @@
 package com.example.yaglimi;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
+import com.example.yaglimi.views.Memberinfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,14 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     private EditText edit_name, edit_email, edit_pw, edit_phone, edit_pwcheck, edit_birth;
@@ -66,8 +54,8 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final String email = edit_email.getText().toString().trim();
-                String pwd = edit_pw.getText().toString().trim();
-                String pwdcheck = edit_pwcheck.getText().toString().trim();
+                final String pwd = edit_pw.getText().toString().trim();
+                final String pwdcheck = edit_pwcheck.getText().toString().trim();
 
                 if(pwd.equals(pwdcheck)) {
                     //신규계정 등록
