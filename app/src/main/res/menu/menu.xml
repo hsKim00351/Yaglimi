@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- Settings, should always be in the overflow -->
+    <item
+        android:id="@+id/share"
+        android:title="상비약나눔게시판"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/information"
+        android:title="정보게시판"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/question"
+        android:title="질문게시판"
+        app:showAsAction="never" />
+    <item android:id="@+id/etc"
+        android:title="기타게시판"
+        app:showAsAction="never"  />
+
+    <item
+        android:id="@+id/home"
+        android:title="홈"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/pill"
+        android:icon="@drawable/pill"
+        app:showAsAction="ifRoom"
+        android:title="png" />
+
+
+</menu>
