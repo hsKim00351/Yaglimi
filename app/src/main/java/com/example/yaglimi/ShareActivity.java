@@ -1,20 +1,39 @@
 package com.example.yaglimi;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.yaglimi.views.Writeinfo;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class ShareActivity extends AppCompatActivity {
+
+    private static final String TAG = "Share";
+    private RecyclerView rview;
+    private RecyclerView.LayoutManager layoutManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,10 +51,14 @@ public class ShareActivity extends AppCompatActivity {
             Intent intentpost = new Intent(getApplicationContext(), PostActivity.class);
             intentpost.putExtra("text", input);
             startActivity(intentpost);
-            finish();
         });
-    }
 
+        rview = findViewById(R.id.post_listview);
+        layoutManager = new LinearLayoutManager(this);
+        rview.setLayoutManager(layoutManager);
+
+        PostShow sharepost = new PostShow("share_posts", rview);
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -44,11 +67,11 @@ public class ShareActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //return super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.share:
                 Toast.makeText(getApplicationContext(), "이미 상비약 나눔게시판 화면입니다.", Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);
+
             case R.id.information:
                 Intent intentinfo = new Intent(getApplicationContext(), InformationActivity.class);
                 startActivity(intentinfo);

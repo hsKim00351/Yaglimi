@@ -9,8 +9,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class QuestionActivity extends AppCompatActivity {
+
+    private static final String TAG = "Question";
+    private RecyclerView rview;
+    private RecyclerView.LayoutManager layoutManager;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question);
@@ -21,6 +30,20 @@ public class QuestionActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("질문 게시판");
 
+        FloatingActionButton post_add = findViewById(R.id.postadd_btn);
+        String input = "질문 게시판";
+        post_add.setOnClickListener(v-> {
+            Intent intentpost = new Intent(getApplicationContext(), PostActivity.class);
+            intentpost.putExtra("text", input);
+            startActivity(intentpost);
+            finish();
+        });
+
+        rview = findViewById(R.id.post_listview);
+        layoutManager = new LinearLayoutManager(this);
+        rview.setLayoutManager(layoutManager);
+
+        PostShow questionpost = new PostShow("question_posts", rview);
     }
 
 

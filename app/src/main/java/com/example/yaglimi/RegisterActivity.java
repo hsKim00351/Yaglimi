@@ -37,7 +37,6 @@ public class RegisterActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("회원가입");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true); 뒤로가기버튼
 
         firebaseAuth =  FirebaseAuth.getInstance();
         edit_name = findViewById(R.id.edit_name);
@@ -81,8 +80,8 @@ public class RegisterActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onSuccess(Void avoid) {
                                                     Toast.makeText(RegisterActivity.this, "회원등록 성공", Toast.LENGTH_SHORT).show();
-                                                    Intent intentmain = new Intent(getApplicationContext(), MainActivity.class);
-                                                    startActivity(intentmain);
+                                                    Intent intentlogin = new Intent(getApplicationContext(), LoginActivity.class);
+                                                    startActivity(intentlogin);
                                                     finish();
                                                 }
                                             }).addOnFailureListener(new OnFailureListener() {

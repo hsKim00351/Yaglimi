@@ -11,21 +11,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.yaglimi.views.Memberinfo;
 import com.example.yaglimi.views.Writeinfo;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PostActivity extends AppCompatActivity {
     private TextView post_activity;
     private EditText post_title, post_content;
     private Button post_confirm;
+    private FirebaseUser user;
+    private String text;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,60 +40,102 @@ public class PostActivity extends AppCompatActivity {
         post_confirm = findViewById(R.id.post_confirm);
 
         Intent intent = getIntent();
-        String text = intent.getStringExtra("text");
+        text = intent.getStringExtra("text");
         post_activity.setText(text);
 
         post_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat Format = new SimpleDateFormat("MM월dd일 hh:mm");
+                String getTime = Format.format(date);
 
+                final String title = post_title.getText().toString();
+                final String content = post_content.getText().toString();
+
+                if (title.length() > 0 && content.length() > 0) {
+                    user = FirebaseAuth.getInstance().getCurrentUser();
+                    Writeinfo wi = new Writeinfo(title, content,user.getUid(),getTime);
+                    upload(wi);
+                } else {
+                    Toast.makeText(getApplicationContext(), "내용을 입력하세요", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    /*private void userInfo() {
-        final String title = post_title.getText().toString();
-        final String content = post_content.getText().toString();
-
-        if(title.length() > 0 && content.length()>0) {
-            Writeinfo wi = new Writeinfo(title, content);
-        }
-            //신규계정 등록
-            firebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    //가입 성공
-                    if (task.isSuccessful()) {
-                        FirebaseUser user = firebaseAuth.getCurrentUser();
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-                        String email = user.getEmail();
-                        String uid = user.getUid();
-                        String name = edit_name.getText().toString().trim();
-                        String phone = edit_phone.getText().toString().trim();
-                        String birth = edit_birth.getText().toString().trim();
-
-                        Memberinfo member = new Memberinfo(name, phone, birth);
-
-                        if (user != null) {
-                            db.collection("users").document(user.getUid()).set(member)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void avoid) {
-                                            Toast.makeText(RegisterActivity.this, "회원등록 성공", Toast.LENGTH_SHORT).show();
-                                            Intent intentmain = new Intent(getApplicationContext(), MainActivity.class);
-                                            startActivity(intentmain);
-                                            finish();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(RegisterActivity.this, "회원등록 실패", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+    private void upload(Writeinfo writeinfo) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if(text.equals("상비약 나눔게시판")){
+            db.collection("share_posts").add(writeinfo)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(PostActivity.this, "등록 성공", Toast.LENGTH_SHORT).show();
+                            Intent intentshare = new Intent(getApplicationContext(), ShareActivity.class);
+                            startActivity(intentshare);
+                            finish();
                         }
-                    }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PostActivity.this, "등록 실패", Toast.LENGTH_SHORT).show();
                 }
             });
-    }*/
+        } else if(text.equals("정보 게시판")){
+            db.collection("info_posts").add(writeinfo)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(PostActivity.this, "등록 성공", Toast.LENGTH_SHORT).show();
+                            Intent intentinfo = new Intent(getApplicationContext(), InformationActivity.class);
+                            startActivity(intentinfo);
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PostActivity.this, "등록 실패", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+        else if(text.equals("질문 게시판")) {
+            db.collection("question_posts").add(writeinfo)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(PostActivity.this, "등록 성공", Toast.LENGTH_SHORT).show();
+                            Intent intentquestion = new Intent(getApplicationContext(), QuestionActivity.class);
+                            startActivity(intentquestion);
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PostActivity.this, "등록 실패", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        else if(text.equals("기타 게시판")) {
+            db.collection("etc_posts").add(writeinfo)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(PostActivity.this, "등록 성공", Toast.LENGTH_SHORT).show();
+                            Intent intentetc = new Intent(getApplicationContext(), EtcActivity.class);
+                            startActivity(intentetc);
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PostActivity.this, "등록 실패", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
 }

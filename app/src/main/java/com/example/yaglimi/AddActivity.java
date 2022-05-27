@@ -78,19 +78,6 @@ public class AddActivity extends AppCompatActivity {
         });
     }
 
-   /* public String getpillname(View v) {
-        String pn = null;
-        if(t1.isChecked()) {
-            pn = t1.getText().toString();
-        } else if(t2.isChecked()) {
-            pn = t2.getText().toString();
-        }else if(t3.isChecked()) {
-            pn = t3.getText().toString();
-        } else if(t4.isChecked()) {
-            pn = t4.getText().toString();
-        }
-        return pn;
-    } */
     @Override
     protected void onDestroy() {
         super.onDestroy();

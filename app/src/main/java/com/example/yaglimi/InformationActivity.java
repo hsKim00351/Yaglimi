@@ -10,8 +10,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class InformationActivity extends AppCompatActivity {
+
+    private static final String TAG = "Information";
+    private RecyclerView rview;
+    private RecyclerView.LayoutManager layoutManager;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +31,21 @@ public class InformationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("정보 게시판");
 
+        String input = "정보 게시판";
+        FloatingActionButton post_add = findViewById(R.id.postadd_btn);
+        post_add.setOnClickListener(v-> {
+            Intent intentpost = new Intent(getApplicationContext(), PostActivity.class);
+            intentpost.putExtra("text", input);
+            startActivity(intentpost);
+        });
+
+        rview = findViewById(R.id.post_listview);
+        layoutManager = new LinearLayoutManager(this);
+        rview.setLayoutManager(layoutManager);
+
+        PostShow infopost = new PostShow("info_posts", rview);
     }
+
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,7 +55,6 @@ public class InformationActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //return super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
             case R.id.share:
                 Intent intentshare = new Intent(getApplicationContext(), ShareActivity.class);

@@ -16,6 +16,9 @@ public interface PillDao {
     @Query("SELECT * FROM pill WHERE id IN (:pillIds)")
     List<Pill> loadAllByIds(int[] pillIds);
 
+    @Query("DELETE FROM pill")
+    void clearAll();
+
     @Insert
     void insertAll(Pill...pills);
 
